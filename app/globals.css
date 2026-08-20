@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sky: #7EC8E3;
+  --color-lavender: #B8A6E0;
+  --color-plum: #2A1B30;
+  --color-cream: #FFF9F5;
+  --font-heading: var(--font-playfair);
+  --font-body: var(--font-nunito);
+}
+
+body {
+  margin: 0;
+  background: var(--color-cream);
+  color: var(--color-plum);
+}
