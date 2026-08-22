@@ -9,8 +9,41 @@
   --font-body: var(--font-nunito);
 }
 
-body {
+html, body {
   margin: 0;
+  padding: 0;
+}
+
+body {
   background: var(--color-cream);
   color: var(--color-plum);
+  
+  /* Prevent rubber-band scroll on iOS */
+  overscroll-behavior: none;
+}
+
+/* Use dynamic viewport height on mobile (100dvh) - handles address bar */
+@supports (height: 100dvh) {
+  html {
+    height: 100dvh;
+  }
+}
+
+/* Prevent input zoom on mobile Safari (keep font-size at 16px minimum) */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+/* Prevent text selection by default */
+* {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Re-enable text selection for text content */
+p, span, a, li, td, th, label {
+  -webkit-user-select: text;
+  user-select: text;
 }
