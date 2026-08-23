@@ -13,7 +13,7 @@ test("sends a chat message and renders the mocked response", async ({ page }) =>
       "",
       'data: {"type":"finish"}',
       "",
-    ].join("\\n");
+    ].join("\n");
 
     await route.fulfill({
       status: 200,
