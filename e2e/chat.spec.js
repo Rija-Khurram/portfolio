@@ -24,8 +24,14 @@ test("sends a chat message and renders the mocked response", async ({ page }) =>
   });
 
   await page.goto("/chat");
-  await page.getByPlaceholder("Type a message...").fill("What can you help me build?");
-  await page.getByRole("button", { name: "Send" }).click();
+  const messageInput = page.getByPlaceholder("Type a message...");
+  const sendButton = page.getByRole("button", { name: "Send" });
+
+  await messageInput.waitFor({ state: "visible" });
+  await page.waitForLoadState("networkidle");
+  await messageInput.fill("What can you help me build?");
+  await expect(sendButton).toBeEnabled({ timeout: 10000 });
+  await sendButton.click();
 
   await expect(page.getByText("Mocked assistant response")).toBeVisible();
 });
