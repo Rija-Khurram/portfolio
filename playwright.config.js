@@ -9,10 +9,12 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   webServer: {
-    command: "node node_modules/next/dist/bin/next dev --webpack --port 3000",
+    command: process.env.CI
+      ? "npm run build && npm run start"
+      : "node node_modules/next/dist/bin/next dev --webpack --port 3000",
     url: "http://127.0.0.1:3000/chat",
     reuseExistingServer: !process.env.CI,
-    timeout: 120000,
+    timeout: 180000,
   },
   projects: [
     {
