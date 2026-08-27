@@ -12,7 +12,8 @@ function LeadScoreCard({ result }) {
   const score = typeof result.score === "number" ? result.score : "N/A";
   const status = result.status || "Unknown";
   const projectType = result.projectType || "Unknown";
-  const recommendation = result.recommendation || "No recommendation available";
+  const recommendation =
+    result.recommendation || "No recommendation available";
 
   return (
     <div className="mt-3 rounded-xl border border-lavender/40 bg-cream/70 p-4">
@@ -144,7 +145,11 @@ function ToolPart({ part }) {
 
     if (part.state === "output-available") {
       // Validate the result has required fields
-      if (part.output && typeof part.output === "object" && "score" in part.output) {
+      if (
+        part.output &&
+        typeof part.output === "object" &&
+        "score" in part.output
+      ) {
         return <LeadScoreCard result={part.output} />;
       } else {
         throw new Error("Invalid lead score output structure");
@@ -198,16 +203,16 @@ function LoadingSkeleton() {
         <div className="space-y-2.5">
           {/* First line - full width */}
           <div className="h-4 w-full animate-pulse rounded bg-lavender/40" />
-          
+
           {/* Second line - 85% width */}
           <div className="h-4 w-[85%] animate-pulse rounded bg-lavender/40" />
-          
+
           {/* Third line - 70% width (breathing room before next message) */}
           <div className="h-4 w-[70%] animate-pulse rounded bg-lavender/40" />
-          
+
           {/* Add some vertical spacing for more realistic placeholder */}
           <div className="pt-1" />
-          
+
           {/* Optional fourth line for longer responses */}
           <div className="h-4 w-[75%] animate-pulse rounded bg-lavender/40" />
         </div>
@@ -230,7 +235,8 @@ function ChatError({ error, onRetry, isRetrying }) {
           </p>
 
           <p className="mt-1 text-sm text-red-600">
-            {error?.message || "The response could not be completed. Check your connection and try again."}
+            {error?.message ||
+              "The response could not be completed. Check your connection and try again."}
           </p>
 
           <p className="mt-2 text-xs text-red-500">
@@ -241,7 +247,7 @@ function ChatError({ error, onRetry, isRetrying }) {
             type="button"
             onClick={onRetry}
             disabled={isRetrying}
-            className="mt-3 rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+            className="mt-3 rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
           >
             {isRetrying ? "Retrying..." : "Try again"}
           </button>
@@ -270,8 +276,14 @@ export default function ChatInterface() {
   const [inputError, setInputError] = useState("");
 
   const scrollContainerRef = useRef(null);
+
+  // Refs used to manage keyboard focus during streaming
+  const textareaRef = useRef(null);
+  const stopButtonRef = useRef(null);
+
   const isPinnedToBottomRef = useRef(true);
   const retryTimeoutRef = useRef(null);
+  const wasBusyRef = useRef(false);
 
   const isThinking = status === "submitted";
   const isStreaming = status === "streaming";
@@ -345,6 +357,18 @@ export default function ChatInterface() {
     };
   }, []);
 
+  // Move keyboard focus to Stop when the AI starts responding.
+  // Return focus to the textarea after streaming stops.
+  useEffect(() => {
+    if (isBusy) {
+      stopButtonRef.current?.focus();
+      wasBusyRef.current = true;
+    } else if (wasBusyRef.current) {
+      textareaRef.current?.focus();
+      wasBusyRef.current = false;
+    }
+  }, [isBusy]);
+
   // Screen-reader-only status text, kept separate from the visual skeleton
   // so streamed content is announced politely without re-reading the
   // entire conversation on every token.
@@ -357,7 +381,7 @@ export default function ChatInterface() {
         : "";
 
   return (
-    <div className="mx-auto w-full max-w-2xl flex flex-col overflow-hidden rounded-xl border border-lavender/30 h-full">
+    <div className="mx-auto flex h-full w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-lavender/30">
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
@@ -471,20 +495,26 @@ export default function ChatInterface() {
         className="flex flex-col gap-2 border-t border-lavender/30 p-3"
       >
         {inputError && (
-          <div className="text-xs text-red-600 px-1" role="alert">
+          <div className="px-1 text-xs text-red-600" role="alert">
             {inputError}
           </div>
         )}
+
         <div className="flex items-end gap-2">
           <label htmlFor="chat-message-input" className="sr-only">
             Type a message
           </label>
+
           <textarea
+            ref={textareaRef}
             id="chat-message-input"
             value={input}
             onChange={(e) => {
               setInput(e.target.value);
-              if (inputError) setInputError("");
+
+              if (inputError) {
+                setInputError("");
+              }
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
@@ -500,6 +530,7 @@ export default function ChatInterface() {
 
           {isBusy ? (
             <button
+              ref={stopButtonRef}
               type="button"
               onClick={stop}
               className="shrink-0 rounded-lg bg-plum px-3 py-2 text-sm font-medium text-cream sm:px-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky"
