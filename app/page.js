@@ -32,7 +32,7 @@ export default function Home() {
           alt="LankaStay booking flow — before and after"
           className="w-full h-full object-cover rounded"
         /> */}
-        <p className="text-plum/50 text-center">
+        <p className="text-plum/70 text-center">
           Add LankaStay booking flow screenshot here
         </p>
       </motion.div>

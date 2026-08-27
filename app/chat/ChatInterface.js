@@ -18,14 +18,14 @@ function LeadScoreCard({ result }) {
     <div className="mt-3 rounded-xl border border-lavender/40 bg-cream/70 p-4">
       <div className="mb-3 flex items-center justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-wide text-plum/50">
+          <p className="text-xs uppercase tracking-wide text-plum/70">
             Lead Score
           </p>
 
           <p className="text-3xl font-bold text-plum">
             {score}
             {typeof score === "number" && (
-              <span className="text-sm font-normal text-plum/50"> / 100</span>
+              <span className="text-sm font-normal text-plum/70"> / 100</span>
             )}
           </p>
         </div>
@@ -36,7 +36,7 @@ function LeadScoreCard({ result }) {
       </div>
 
       <div className="mb-3">
-        <p className="text-xs uppercase tracking-wide text-plum/50">
+        <p className="text-xs uppercase tracking-wide text-plum/70">
           Project
         </p>
 
@@ -47,21 +47,21 @@ function LeadScoreCard({ result }) {
 
       <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
         <div className="rounded-lg bg-lavender/20 p-2">
-          <p className="text-xs text-plum/50">Interest</p>
+          <p className="text-xs text-plum/70">Interest</p>
           <p className="text-sm font-medium capitalize text-plum">
             {result.factors?.interest || "Unknown"}
           </p>
         </div>
 
         <div className="rounded-lg bg-lavender/20 p-2">
-          <p className="text-xs text-plum/50">Budget</p>
+          <p className="text-xs text-plum/70">Budget</p>
           <p className="text-sm font-medium capitalize text-plum">
             {result.factors?.budget || "Unknown"}
           </p>
         </div>
 
         <div className="rounded-lg bg-lavender/20 p-2">
-          <p className="text-xs text-plum/50">Timeline</p>
+          <p className="text-xs text-plum/70">Timeline</p>
           <p className="text-sm font-medium capitalize text-plum">
             {result.factors?.timeline || "Unknown"}
           </p>
@@ -69,7 +69,7 @@ function LeadScoreCard({ result }) {
       </div>
 
       <div className="rounded-lg bg-sky/30 p-3">
-        <p className="text-xs uppercase tracking-wide text-plum/50">
+        <p className="text-xs uppercase tracking-wide text-plum/70">
           Recommendation
         </p>
 
@@ -101,41 +101,41 @@ function ToolPart({ part }) {
     if (part.state === "input-available") {
       return (
         <div className="mt-2 rounded-xl border border-lavender/40 bg-lavender/10 p-3">
-          <p className="mb-2 text-xs uppercase tracking-wide text-plum/50">
+          <p className="mb-2 text-xs uppercase tracking-wide text-plum/70">
             Lead scoring input
           </p>
 
           <div className="grid grid-cols-1 gap-2 text-xs text-plum sm:grid-cols-2">
             <div>
-              <span className="text-plum/50">Interest:</span>{" "}
+              <span className="text-plum/70">Interest:</span>{" "}
               <span className="font-medium capitalize">
                 {part.input?.interestLevel || "Unknown"}
               </span>
             </div>
 
             <div>
-              <span className="text-plum/50">Budget:</span>{" "}
+              <span className="text-plum/70">Budget:</span>{" "}
               <span className="font-medium capitalize">
                 {part.input?.budgetRange || "Unknown"}
               </span>
             </div>
 
             <div>
-              <span className="text-plum/50">Timeline:</span>{" "}
+              <span className="text-plum/70">Timeline:</span>{" "}
               <span className="font-medium capitalize">
                 {part.input?.timeline || "Unknown"}
               </span>
             </div>
 
             <div>
-              <span className="text-plum/50">Project:</span>{" "}
+              <span className="text-plum/70">Project:</span>{" "}
               <span className="font-medium">
                 {part.input?.projectType || "Unknown"}
               </span>
             </div>
           </div>
 
-          <p className="mt-2 text-xs text-plum/50">
+          <p className="mt-2 text-xs text-plum/70">
             Scoring lead...
           </p>
         </div>
@@ -241,7 +241,7 @@ function ChatError({ error, onRetry, isRetrying }) {
             type="button"
             onClick={onRetry}
             disabled={isRetrying}
-            className="mt-3 rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-3 rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
           >
             {isRetrying ? "Retrying..." : "Try again"}
           </button>
@@ -345,20 +345,37 @@ export default function ChatInterface() {
     };
   }, []);
 
+  // Screen-reader-only status text, kept separate from the visual skeleton
+  // so streamed content is announced politely without re-reading the
+  // entire conversation on every token.
+  const liveStatusText = isThinking
+    ? "Assistant is preparing a response."
+    : isStreaming
+      ? "Assistant is responding."
+      : error
+        ? "Message failed to send."
+        : "";
+
   return (
     <div className="mx-auto w-full max-w-2xl flex flex-col overflow-hidden rounded-xl border border-lavender/30 h-full">
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
         className="flex-1 overflow-y-auto px-3 py-4 sm:px-4"
+        aria-live="polite"
+        aria-atomic="false"
       >
+        <span className="sr-only" role="status">
+          {liveStatusText}
+        </span>
+
         {messages.length === 0 && !isBusy && !error && (
           <div className="mx-auto mt-8 max-w-lg text-center sm:mt-12">
             <p className="text-lg font-semibold text-plum">
               How can I help?
             </p>
 
-            <p className="mt-2 text-sm text-plum/60">
+            <p className="mt-2 text-sm text-plum/70">
               Ask me about frontend development, AI workflows, or describe a
               potential client project to score the lead.
             </p>
@@ -371,7 +388,7 @@ export default function ChatInterface() {
                     "What technologies should I use to build a modern portfolio?"
                   )
                 }
-                className="rounded-xl border border-lavender/30 bg-lavender/10 p-3 text-left text-sm text-plum transition hover:bg-lavender/20"
+                className="rounded-xl border border-lavender/30 bg-lavender/10 p-3 text-left text-sm text-plum transition hover:bg-lavender/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-plum"
               >
                 💻 Ask about frontend development
               </button>
@@ -383,7 +400,7 @@ export default function ChatInterface() {
                     "I need a website redesign. I am highly interested, my budget is medium, and I want to start soon. Please qualify me as a lead."
                   )
                 }
-                className="rounded-xl border border-lavender/30 bg-lavender/10 p-3 text-left text-sm text-plum transition hover:bg-lavender/20"
+                className="rounded-xl border border-lavender/30 bg-lavender/10 p-3 text-left text-sm text-plum transition hover:bg-lavender/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-plum"
               >
                 📊 Score a potential lead
               </button>
@@ -454,12 +471,16 @@ export default function ChatInterface() {
         className="flex flex-col gap-2 border-t border-lavender/30 p-3"
       >
         {inputError && (
-          <div className="text-xs text-red-600 px-1">
+          <div className="text-xs text-red-600 px-1" role="alert">
             {inputError}
           </div>
         )}
         <div className="flex items-end gap-2">
+          <label htmlFor="chat-message-input" className="sr-only">
+            Type a message
+          </label>
           <textarea
+            id="chat-message-input"
             value={input}
             onChange={(e) => {
               setInput(e.target.value);
@@ -474,14 +495,14 @@ export default function ChatInterface() {
             rows={1}
             placeholder="Type a message..."
             disabled={isBusy}
-            className="min-h-[40px] min-w-0 flex-1 resize-none rounded-lg border border-lavender/30 px-3 py-2 text-sm outline-none focus:border-sky disabled:opacity-60"
+            className="min-h-[40px] min-w-0 flex-1 resize-none rounded-lg border border-lavender/30 px-3 py-2 text-sm outline-none focus:border-sky focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-plum disabled:opacity-60"
           />
 
           {isBusy ? (
             <button
               type="button"
               onClick={stop}
-              className="shrink-0 rounded-lg bg-plum px-3 py-2 text-sm font-medium text-cream sm:px-4"
+              className="shrink-0 rounded-lg bg-plum px-3 py-2 text-sm font-medium text-cream sm:px-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky"
             >
               Stop
             </button>
@@ -489,7 +510,7 @@ export default function ChatInterface() {
             <button
               type="submit"
               disabled={!input.trim()}
-              className="shrink-0 rounded-lg bg-sky px-3 py-2 text-sm font-medium text-plum disabled:opacity-40 sm:px-4"
+              className="shrink-0 rounded-lg bg-sky px-3 py-2 text-sm font-medium text-plum disabled:opacity-40 sm:px-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-plum"
             >
               Send
             </button>

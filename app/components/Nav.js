@@ -23,7 +23,7 @@ export default function Nav() {
             <Link
               key={link.href}
               href={link.href}
-              className="relative text-plum after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-sky after:transition-all after:duration-200 hover:after:w-full"
+              className="relative rounded text-plum after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-sky after:transition-all after:duration-200 hover:after:w-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-plum"
             >
               {link.label}
             </Link>

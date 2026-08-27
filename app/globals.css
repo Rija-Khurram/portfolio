@@ -47,3 +47,25 @@ p, span, a, li, td, th, label {
   -webkit-user-select: text;
   user-select: text;
 }
+
+/* Skip link: off-screen until keyboard-focused, then jumps to the top */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-150%);
+  z-index: 100;
+  background: var(--color-plum);
+  color: var(--color-cream);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 0.5rem 0;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.15s ease-out;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid var(--color-sky);
+  outline-offset: 2px;
+}

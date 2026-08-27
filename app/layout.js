@@ -21,8 +21,6 @@ export const metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: "cover",
 }
 
@@ -30,8 +28,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${playfair.variable} ${nunito.variable}`} style={{ fontFamily: "var(--font-nunito)" }}>
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         <Nav />
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
       </body>
     </html>
   )

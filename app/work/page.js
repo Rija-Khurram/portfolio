@@ -36,7 +36,7 @@ export default function Work() {
         </p>
       </motion.section>
       <motion.p
-        className="text-sm text-plum/50"
+        className="text-sm text-plum/70"
         {...fadeInVariant(0.2)}
       >
         [Placeholder — space reserved for a second case study.]

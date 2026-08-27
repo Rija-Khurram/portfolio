@@ -24,13 +24,13 @@ export default async function Health() {
         Health check
       </h1>
       <div className="border border-lavender/30 rounded-xl p-6">
-        <p className="text-sm text-plum/60 mb-2">Status</p>
+        <p className="text-sm text-plum/70 mb-2">Status</p>
         <p className="text-lg mb-4">
           {status.ok ? "✓ Server fetch working" : "✗ Fetch failed"}
         </p>
-        <p className="text-sm text-plum/60 mb-2">Fetched data</p>
+        <p className="text-sm text-plum/70 mb-2">Fetched data</p>
         <p className="text-plum mb-4">&ldquo;{status.message}&rdquo;</p>
-        <p className="text-xs text-plum/50">Checked at {status.checkedAt}</p>
+        <p className="text-xs text-plum/70">Checked at {status.checkedAt}</p>
       </div>
     </div>
   )

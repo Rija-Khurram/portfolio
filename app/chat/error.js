@@ -9,7 +9,7 @@ export default function ChatError({ error, reset }) {
   }, [error]);
 
   return (
-    <main className="flex min-h-[70vh] items-center justify-center px-4">
+    <div className="flex min-h-[70vh] items-center justify-center px-4">
       <div className="w-full max-w-md rounded-2xl border border-red-200 bg-cream p-6 text-center">
         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-xl text-red-600">
           ⚠️
@@ -19,14 +19,14 @@ export default function ChatError({ error, reset }) {
           Chat encountered an error
         </h2>
 
-        <p className="mt-2 text-sm text-plum/60">
+        <p className="mt-2 text-sm text-plum/70">
           Something unexpected happened while loading the chat interface.
           This might be due to a network issue or temporary server problem.
         </p>
 
         {error?.message && (
           <details className="mt-3 text-left">
-            <summary className="cursor-pointer text-xs text-plum/50 hover:text-plum/70">
+            <summary className="cursor-pointer text-xs text-plum/70 hover:text-plum focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-plum">
               Error details
             </summary>
             <p className="mt-2 rounded bg-red-50 p-2 font-mono text-xs text-red-700 break-words">
@@ -38,15 +38,15 @@ export default function ChatError({ error, reset }) {
         <button
           type="button"
           onClick={() => reset()}
-          className="mt-5 rounded-lg bg-plum px-4 py-2 text-sm font-medium text-cream hover:opacity-90 transition"
+          className="mt-5 rounded-lg bg-plum px-4 py-2 text-sm font-medium text-cream hover:opacity-90 transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky"
         >
           Try again
         </button>
 
-        <p className="mt-3 text-xs text-plum/40">
+        <p className="mt-3 text-xs text-plum/70">
           If this persists, try refreshing the page.
         </p>
       </div>
-    </main>
+    </div>
   );
 }

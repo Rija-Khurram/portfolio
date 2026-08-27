@@ -1,13 +1,23 @@
 export default function ChatLoading() {
   return (
     <div className="flex flex-col h-screen max-h-screen w-full bg-cream">
+      <span className="sr-only" role="status">
+        Loading chat interface…
+      </span>
+
       {/* Header skeleton */}
-      <div className="flex-shrink-0 border-b border-lavender/30 px-4 py-4 sm:px-6">
+      <div
+        aria-hidden="true"
+        className="flex-shrink-0 border-b border-lavender/30 px-4 py-4 sm:px-6"
+      >
         <div className="h-8 w-24 animate-pulse rounded bg-lavender/30" />
       </div>
 
       {/* Chat container with skeleton */}
-      <div className="flex-1 overflow-hidden px-4 py-4 sm:px-6 flex flex-col">
+      <div
+        aria-hidden="true"
+        className="flex-1 overflow-hidden px-4 py-4 sm:px-6 flex flex-col"
+      >
         <div className="mx-auto w-full max-w-2xl flex flex-col overflow-hidden rounded-xl border border-lavender/30 h-full">
           {/* Messages area skeleton */}
           <div className="flex-1 overflow-y-auto px-3 py-4 sm:px-4">
