@@ -263,8 +263,10 @@ This project was built with AI assistance throughout, used as a pair-programmer 
 - A real bug, found and fixed with AI assistance: the Playwright E2E test passed locally but failed in CI with a 30-second timeout waiting for the Send button to enable. Two initial hypotheses (a malformed SSE mock delimiter, then a hydration-timing race) were tested and ruled out by reading the actual button's disabled logic in the source and the live CI error logs — not by guessing. The real cause was that CI ran the dev server (`next dev`), which hydrates too slowly under Playwright's automation compared to a production build. The fix: CI now runs `npm run build && npm run start` instead of `next dev`.
 - AI-generated code was never merged without review — an early version of an accessible Disclosure component (from a separate assignment) turned out to be wrapping a component library primitive instead of being genuinely built from scratch, caught during review and rebuilt by hand.
 - Every AI-authored change was verified by actually running the build, the test suite, or the browser — not just assumed to work from the AI's own claim.
-## Known Limitations
+## Additional Notes
 
-- **E2E test not currently running locally on all machines / not yet pushed to `main`.** The Playwright test (`e2e/chat.spec.js`) exists but is not being picked up by `npx playwright test` in the current local environment (`Error: No tests found` despite the file and config both being present) — root cause not yet identified. It also has not been committed to the GitHub repo yet. Next step: isolate whether this is a Playwright cache/version issue or a config resolution problem, then commit the `e2e/` folder.
 - Rate limiting is in-memory only (see comment in `lib/rate-limit.js`) — resets on cold start/redeploy and does not share state across concurrent serverless instances. Acceptable at this project's scale; a production app would need a shared store like Upstash Redis.
-- Two Work-page case study screenshots (LankaStay booking flow, Library App workflow) are still placeholders.
+- ## Deployment & Reflection
+
+- **Deployment checklist:** [`DEPLOYMENT.md`](https://github.com/Rija-Khurram/portfolio/blob/main/DEPLOYMENT.md) — environment setup, production hygiene (rate limiting, `maxDuration`), how the app fails safely, and the rollback plan.
+- **Reflection:** [`REFLECTION.md`](https://github.com/Rija-Khurram/portfolio/blob/main/REFLECTION.md) — what was hardest, what I'd do differently, and one surprising learning from this project.
