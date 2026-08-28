@@ -23,18 +23,14 @@ export default function Home() {
         Complex features, simple interfaces.
       </motion.h1>
       <motion.div
-        className="mb-8 border-2 border-dashed border-lavender/30 rounded flex items-center justify-center"
-        style={{ width: "100%", height: "450px", backgroundColor: "rgba(184, 166, 224, 0.08)" }}
+        className="mb-8 overflow-hidden rounded-xl"
         {...fadeInVariant(0.1)}
       >
-        {/* <img
+        <img
           src="/images/lankastay-proof.png"
           alt="LankaStay booking flow — before and after"
-          className="w-full h-full object-cover rounded"
-        /> */}
-        <p className="text-plum/70 text-center">
-          Add LankaStay booking flow screenshot here
-        </p>
+          className="w-full h-auto rounded-xl border border-lavender/30"
+        />
       </motion.div>
       <motion.p
         className="text-plum/70"
